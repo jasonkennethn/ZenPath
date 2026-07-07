@@ -19,7 +19,7 @@ export default function Home() {
           <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary to-accent flex items-center justify-center shadow-lg active-shrink p-2">
             <img src="/logo.png" alt="ZenPath Logo" className="logo-img w-full h-full object-contain" />
           </div>
-          <span className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground via-foreground/90 to-primary">
+          <span className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground via-foreground/90 to-primary hidden sm:block">
             ZenPath
           </span>
         </div>
@@ -117,11 +117,6 @@ export default function Home() {
           </div>
         </div>
       </main>
-
-      {/* Footer */}
-      <footer className="glass py-8 border-t border-border-custom text-center text-xs text-foreground-secondary z-10">
-        <p>&copy; {new Date().getFullYear()} ZenPath. All rights reserved. Powered by Gemini 1.5 Flash.</p>
-      </footer>
     </div>
   );
 }

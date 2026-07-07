@@ -1,15 +1,28 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
-import { Sparkles, LayoutDashboard, User as UserIcon, LogOut, Loader, GraduationCap, Briefcase, Sun, Moon } from "lucide-react";
+import { 
+  Sparkles, 
+  LayoutDashboard, 
+  User as UserIcon, 
+  LogOut, 
+  Loader, 
+  GraduationCap, 
+  Briefcase, 
+  Sun, 
+  Moon,
+  Menu,
+  X
+} from "lucide-react";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { user, token, loading, logout, theme, toggleTheme } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     // If not loading and no token, redirect to login
@@ -17,6 +30,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       router.push("/login");
     }
   }, [token, loading, router]);
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
 
   if (loading || !user) {
     return (
@@ -29,21 +47,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     );
   }
 
-  return (
-    <div className="flex-1 flex flex-col md:flex-row min-h-screen">
-      {/* Sidebar Navigation */}
-      <aside className="w-full md:w-64 glass border-b md:border-b-0 md:border-r border-border-custom flex flex-col justify-between shrink-0">
+  const SidebarContent = () => (
+    <>
+      <div className="flex flex-col flex-1 justify-between">
         <div>
-          {/* Logo Brand */}
-          <div className="p-6 flex items-center gap-2.5 border-b border-border-custom">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-primary to-accent flex items-center justify-center shadow-lg active-shrink p-2">
-              <img src="/logo.png" alt="ZenPath Logo" className="logo-img w-full h-full object-contain" />
-            </div>
-            <span className="text-lg font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground via-foreground/90 to-primary">
-              ZenPath
-            </span>
-          </div>
-
           {/* User Profile Info Card */}
           <div className="p-5 border-b border-border-custom bg-black/5 dark:bg-white/[0.01]">
             <div className="flex items-center gap-3">
@@ -84,8 +91,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </nav>
         </div>
 
-        {/* Logout Bottom Footer */}
-        <div className="p-4 border-t border-border-custom">
+        {/* Bottom Footer */}
+        <div className="p-4 border-t border-border-custom bg-black/5 dark:bg-white/[0.01]">
           <button
             onClick={toggleTheme}
             className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-foreground-secondary hover:bg-black/5 dark:hover:bg-white/5 hover:text-foreground transition-all duration-200 active-shrink cursor-pointer mb-2"
@@ -107,7 +114,67 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <LogOut className="w-5 h-5" /> Sign Out
           </button>
         </div>
+      </div>
+    </>
+  );
+
+  return (
+    <div className="flex-1 flex flex-col md:flex-row min-h-screen">
+      {/* --- DESKTOP SIDEBAR --- */}
+      <aside className="hidden md:flex w-64 glass border-r border-border-custom flex-col justify-between shrink-0">
+        <div>
+          {/* Logo Brand */}
+          <div className="p-6 flex items-center gap-2.5 border-b border-border-custom">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-primary to-accent flex items-center justify-center shadow-lg p-2">
+              <img src="/logo.png" alt="ZenPath Logo" className="logo-img w-full h-full object-contain" />
+            </div>
+            <span className="text-lg font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground via-foreground/90 to-primary">
+              ZenPath
+            </span>
+          </div>
+        </div>
+        <SidebarContent />
       </aside>
+
+      {/* --- MOBILE NAVBAR HEADER --- */}
+      <header className="md:hidden glass sticky top-0 z-40 px-6 py-4 flex items-center justify-between border-b border-border-custom">
+        <div className="flex items-center gap-2.5">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-primary to-accent flex items-center justify-center shadow-lg p-2">
+            <img src="/logo.png" alt="ZenPath Logo" className="logo-img w-full h-full object-contain" />
+          </div>
+          <span className="text-lg font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground via-foreground/90 to-primary">
+            ZenPath
+          </span>
+        </div>
+
+        <div className="flex items-center gap-3">
+          {/* Theme Toggler */}
+          <button
+            onClick={toggleTheme}
+            className="p-2 glass border border-border-custom text-foreground-secondary hover:text-foreground rounded-xl active-shrink transition-colors cursor-pointer"
+          >
+            {theme === "dark" ? <Sun className="w-4.5 h-4.5 text-amber-400" /> : <Moon className="w-4.5 h-4.5 text-indigo-400" />}
+          </button>
+          {/* Mobile hamburger menu */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="p-2 glass border border-border-custom text-foreground-secondary hover:text-foreground rounded-xl active-shrink transition-colors cursor-pointer"
+          >
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
+      </header>
+
+      {/* --- MOBILE NAV DRAWER (SLIDING MENU) --- */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-30 md:hidden flex justify-start bg-slate-950/60 backdrop-blur-sm animate-fade-in">
+          <div className="w-72 bg-background border-r border-border-custom h-full pt-20 flex flex-col shadow-2xl relative animate-slide-in">
+            <SidebarContent />
+          </div>
+          {/* Clicking on overlay closes menu */}
+          <div className="flex-1" onClick={() => setMobileMenuOpen(false)} />
+        </div>
+      )}
 
       {/* Main Panel Content Area */}
       <main className="flex-1 flex flex-col min-w-0 bg-background overflow-y-auto">
