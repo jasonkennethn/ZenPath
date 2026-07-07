@@ -106,7 +106,7 @@ Generate a connection URL with SSL enabled, e.g.:
    ```bash
    uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
    ```
-   * The API documentation will be available at `http://localhost:8000/docs`.
+   * The API documentation will be available at `https://zenpath-backend.vercel.app/docs`.
 
 ### 3. Frontend Setup
 1. Navigate to the `frontend` directory:
@@ -121,7 +121,7 @@ Generate a connection URL with SSL enabled, e.g.:
    ```bash
    npm run dev
    ```
-   * Open `http://localhost:3000` to access the application.
+   * Open `https://zenpath.vercel.app` to access the application.
 
 ---
 

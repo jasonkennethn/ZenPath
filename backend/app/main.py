@@ -15,8 +15,6 @@ app = FastAPI(
 
 # CORS Middleware configuration - production level settings supporting credentials
 origins = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
     "https://zenpath.vercel.app",
 ]
 
