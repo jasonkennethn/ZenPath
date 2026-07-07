@@ -1,85 +1,115 @@
 # ZenPath 🎓💼
 
-ZenPath is a premium, high-performance job board and intelligent web scraping platform designed to bridge the gap between student applicants and hiring managers. 
+> **ZenPath** is an enterprise-grade, AI-powered career matching and recruitment workflow platform. It enables students to discover, scrape, and track job opportunities, while giving hiring managers a complete Applicant Tracking System (ATS) to post positions, review candidates, and manage hiring pipelines.
 
-Built with **Next.js (React + TypeScript)** on the frontend and **FastAPI (Python)** on the backend, the platform features role-based access control, real-time application status tracking, responsive glassmorphic interfaces, and an AI-powered job parser driven by the **Google Gemini 1.5 Flash Model**.
-
----
-
-## 🌟 Core Features
-
-### 👤 Role-Based Access Control
-* **Student Portal:**
-  * Explore and search from database listings or external jobs.
-  * Run the **Gemini AI Intelligent Web Scraper** using any raw URL or query.
-  * Apply directly to postings, submit cover letters, and link resumes.
-  * Check submission progress in real time via the **Applications Timeline**.
-  * Edit and maintain a professional profile (bio, portfolio link, and real-time skills badges).
-* **Hiring Manager Portal:**
-  * Post new positions, modify active details, or close listings.
-  * View real-time statistics (active openings and incoming candidates).
-  * Check candidate summaries, biographies, skills, and resumes.
-  * Manage hiring pipelines by progressing application stages (`Applied`, `Reviewing`, `Accepted`, `Rejected`).
-
-### 🤖 Gemini AI Scraper
-* Paste any career site URL (e.g., `stripe.com/careers`) or enter an AI search query.
-* Backend calls Gemini 1.5 Flash to automatically parse and return structured jobs (Title, Company, Location, Description, Requirements, and Application URL) and save them to PostgreSQL.
-
-### 🎨 Apple-Smooth Aesthetics
-* High-performance glassmorphism design system.
-* Fast, pulsing skeleton loader screens (<0.05s response simulated) instead of jarring spinners.
-* Non-blocking Toast notification banners.
-* Native system dark/light mode detection that auto-adapts on first visit and persists choices in `localStorage`.
+ZenPath is built using a modern, decoupled architecture: **Next.js (React + TypeScript)** on the frontend, **FastAPI (Python)** on the backend, and **Neon Serverless PostgreSQL** for data persistence. The platform features an intelligent, LLM-driven job extraction engine powered by the **Google Gemini 1.5 Flash Model** to turn any career portal URL or search query into structured database listings instantly.
 
 ---
 
-## 🛠️ Technology Stack
+## 🌟 Core Product Capabilities
 
-* **Frontend:** Next.js 15+ (App Router), React 19, TypeScript, Vanilla CSS + Tailwind CSS v4, Lucide React (Icons).
-* **Backend:** FastAPI, Python 3.9+, SQLAlchemy ORM, Uvicorn (ASGI server).
-* **Database:** Neon Serverless PostgreSQL (Hosted database).
-* **AI Model:** Google Gemini 1.5 Flash API.
+### 1. AI-Driven Job Extraction (Gemini Scraper)
+* **Web Scraping Engine:** Crawl and extract job details from any public career site (e.g., `stripe.com/careers`) or company board.
+* **Intelligent Querying:** Type natural language search queries (e.g., *"React developer remote"*). The extraction engine parses web resources and structures them into unified schema formats.
+* **LLM Parsing:** Integrates Google Gemini 1.5 Flash to dynamically clean raw HTML/text, extracting titles, locations, companies, salary ranges, full descriptions, and requirements in structured JSON format.
+
+### 2. Candidate (Student) Experience
+* **Centralized Search Board:** Explore both internal postings (submitted directly by hiring managers) and external listings (scraped via AI).
+* **Unified Pipeline Tracker:** View complete application histories in a visual timeline from submission to final decision.
+* **Live Profile & CV Manager:** Update professional bios, portfolio links, and resume document paths. Skills inputs automatically generate responsive interactive tags on candidate summaries.
+
+### 3. Employer (Hiring Manager) Workspace
+* **Postings Manager:** Publish, edit, and close listings through a clean interface with immediate database updates.
+* **Applicant Tracking System (ATS):** Access candidate details including resumes, cover letters, skills, and histories.
+* **Pipeline Status Lifecycle:** Push applicants through stages (`Applied` ➡️ `Reviewing` ➡️ `Accepted` or `Rejected`) with instant visual feedback.
+
+### 4. Apple-Smooth Design & UX
+* **Glassmorphism Theme System:** Sleek, premium styling using backdrop filters, custom scrollbars, and glowing overlays.
+* **Fast Skeleton Loading:** Smooth, pulsing placeholders load in **<0.05 seconds**, ensuring a fluid user experience.
+* **Non-Blocking Toast System:** In-page status alerts that do not block the browser thread.
+* **Auto-Adaptive Themes:** Detects and applies system preferences (Dark/Light mode) on first load, caching overrides in `localStorage`.
+* **Mobile-Responsive Layout:** Sticky navigation headers and a sliding hamburger menu drawer on mobile.
 
 ---
 
-## 📁 Directory Structure
+## ⚙️ Architecture & Technical Stack
 
 ```
-ASSIGNMENT/
-├── backend/                  # FastAPI Backend Service
-│   ├── app/
-│   │   ├── routers/          # API endpoints (auth, jobs, profiles, etc.)
-│   │   ├── database.py       # SQLAlchemy setup & connection pooling
-│   │   ├── main.py           # FastAPI server initialization & CORS
-│   │   ├── models.py         # SQLAlchemy Database Schemas
-│   │   ├── schemas.py        # Pydantic Request/Response validation
-│   │   └── scraper.py        # Gemini AI Scraper Integration
-│   ├── requirements.txt      # Python dependencies
-│   ├── .env                  # Environment secrets (ignored by git)
-│   └── .env.example          # Environment template
-│
-├── frontend/                 # Next.js Frontend Application
-│   ├── src/
-│   │   ├── app/              # Next.js Pages & Router layouts
-│   │   ├── context/          # Auth, Theme, & API contexts
-│   │   └── globals.css       # Core design styles & glassmorphic tokens
-│   ├── public/               # Asset files (Logo, Icons)
-│   ├── package.json          # Node dependencies
-│   └── tsconfig.json         # TypeScript configuration
-│
-└── README.md                 # Primary Documentation
+                     ┌───────────────────────────────┐
+                     │     Next.js Client (SPA)      │
+                     │  (Vercel: zenpath-frontend)   │
+                     └───────────────┬───────────────┘
+                                     │ HTTPS / JWT
+                                     ▼
+                     ┌───────────────────────────────┐
+                     │    FastAPI Gateway Server     │
+                     │   (Vercel: zenpath-backend)   │
+                     └───────┬───────────────┬───────┘
+                             │               │
+                             ▼               ▼
+            ┌──────────────────┐   ┌───────────────────┐
+            │  Serverless PG   │   │  Google Gemini    │
+            │  (Neon Database) │   │   1.5 Flash API   │
+            └──────────────────┘   └───────────────────┘
+```
+
+### 💻 Frontend Client
+* **Framework:** Next.js 15+ (App Router)
+* **Language:** TypeScript
+* **Styling:** Tailwind CSS v4 & Vanilla CSS
+* **State Management:** React Context (Auth, Theme)
+* **Icons:** Lucide React
+
+### ⚙️ Backend API Server
+* **Framework:** FastAPI (Python 3.9+)
+* **Database Access:** SQLAlchemy ORM
+* **Security:** JWT (JSON Web Tokens), `bcrypt` password hashing
+* **Production Gateway:** Uvicorn ASGI Server & Vercel Python Runtime
+
+### 🗄️ Database & Core Infrastructure
+* **Relational Database:** Hosted Serverless PostgreSQL via Neon.
+* **Connection Pooling:** Enabled connection reuse (`pool_size=5`, `max_overflow=10`, `pool_pre_ping=True`) to handle high-concurrency database queries.
+
+---
+
+## 🔒 Production Environment Configurations
+
+ZenPath utilizes distinct environment variables for the frontend and backend. In production, these should be configured inside your Vercel Project dashboards.
+
+### Backend Configurations (`backend/.env`)
+Create a file named `.env` in the `backend/` folder:
+
+```env
+# PostgreSQL Connection URL (Neon pooler connection string)
+DATABASE_URL=postgresql://user:password@host-pooler.region.neon.tech/dbname?sslmode=require
+
+# JWT Token Settings
+JWT_SECRET=your_secret_jwt_key_here
+JWT_ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=1440
+
+# Gemini AI Platform API Key
+GEMINI_API_KEY=your_gemini_api_key_here
+
+# Production Frontend Allowed Origin (for CORS Validation)
+FRONTEND_URL=https://zenpath-frontend.vercel.app
+```
+
+### Frontend Configurations (`frontend/.env`)
+Create a file named `.env` in the `frontend/` folder:
+
+```env
+# Production Backend Target Endpoint
+NEXT_PUBLIC_BACKEND_URL=https://zenpath-backend.vercel.app
 ```
 
 ---
 
-## 🚀 Setup & Installation
+## 🚀 Setup & Installation Guide
 
-### 1. Database Configuration
-Ensure you have a PostgreSQL instance running. We recommend [Neon PostgreSQL](https://neon.tech) for serverless scalability.
-Generate a connection URL with SSL enabled, e.g.:
-`postgresql://user:password@host-pooler.region.neon.tech/dbname?sslmode=require`
+To run ZenPath locally, follow the steps below:
 
-### 2. Backend Setup
+### 1. Backend Setup
 1. Navigate to the `backend` directory:
    ```bash
    cd backend
@@ -89,26 +119,17 @@ Generate a connection URL with SSL enabled, e.g.:
    python -m venv env
    source env/bin/activate
    ```
-3. Install dependencies:
+3. Install required Python packages:
    ```bash
    pip install -r requirements.txt
    ```
-4. Create a `.env` file based on `.env.example`:
-   ```bash
-   cp .env.example .env
-   ```
-5. Populate variables inside `.env`:
-   * `DATABASE_URL`: Your PostgreSQL connection string.
-   * `JWT_SECRET`: A secure key for encoding JWT authentication tokens.
-   * `GEMINI_API_KEY`: Your Google Gemini API Key.
-
-6. Launch the FastAPI server:
+4. Verify your `.env` contains the required keys.
+5. Start the API server:
    ```bash
    uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
    ```
-   * The API documentation will be available at `https://zenpath-backend.vercel.app/docs`.
 
-### 3. Frontend Setup
+### 2. Frontend Setup
 1. Navigate to the `frontend` directory:
    ```bash
    cd ../frontend
@@ -117,16 +138,27 @@ Generate a connection URL with SSL enabled, e.g.:
    ```bash
    npm install
    ```
-3. Launch the Next.js development server:
+3. Start the Next.js development server:
    ```bash
    npm run dev
    ```
-   * Open `https://zenpath-frontend.vercel.app` to access the application.
 
 ---
 
-## 🔒 Production Readiness Checklist
-* [x] CORS origins configured cleanly inside backend `main.py`.
-* [x] Neon Connection pooling enabled (`pool_size=5`, `max_overflow=10`).
-* [x] Secrets completely ignored via root `.gitignore`.
-* [x] Dynamic production-ready Next.js layout building correctly with Turbopack.
+## 🌐 Vercel Deployment Guide
+
+ZenPath is designed to deploy to Vercel as two separate projects:
+
+### 1. Deploying the Frontend (`zenpath-frontend.vercel.app`)
+1. Import your repository in Vercel.
+2. Under **Project Settings**, set the **Root Directory** to `frontend`.
+3. Vercel will automatically configure the **Next.js** build presets.
+4. Add the `NEXT_PUBLIC_BACKEND_URL` environment variable.
+5. Click **Deploy**.
+
+### 2. Deploying the Backend (`zenpath-backend.vercel.app`)
+1. Import your repository in Vercel.
+2. Set the **Root Directory** to `backend`.
+3. Vercel will automatically read the `vercel.json` configuration and deploy your FastAPI app using the `@vercel/python` runtime.
+4. Add all environment variables listed in the Backend section (`DATABASE_URL`, `JWT_SECRET`, `JWT_ALGORITHM`, `ACCESS_TOKEN_EXPIRE_MINUTES`, `GEMINI_API_KEY`, and `FRONTEND_URL`).
+5. Click **Deploy**.
