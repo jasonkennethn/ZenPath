@@ -3,8 +3,8 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-// Define backend URL - since backend runs on localhost:8000, we hardcode it or use config
-const BACKEND_URL = "http://localhost:8000";
+// Define backend URL - defaults to production Vercel link, can be overridden locally
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://zenpath-backend.vercel.app";
 
 interface UserProfile {
   id: number;

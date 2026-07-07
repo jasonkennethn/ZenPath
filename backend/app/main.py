@@ -13,10 +13,16 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# CORS Middleware configuration
+# CORS Middleware configuration - production level settings supporting credentials
+origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "https://zenpath.vercel.app",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow all origins for dev sandbox environment
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
