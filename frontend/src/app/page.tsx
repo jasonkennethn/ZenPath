@@ -19,7 +19,7 @@ export default function Home() {
           <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary to-accent flex items-center justify-center shadow-lg active-shrink p-2">
             <img src="/logo.png" alt="ZenPath Logo" className="logo-img w-full h-full object-contain" />
           </div>
-          <span className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground via-foreground/90 to-primary hidden sm:block">
+          <span className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground via-foreground/90 to-primary">
             ZenPath
           </span>
         </div>
@@ -36,12 +36,6 @@ export default function Home() {
               <Moon className="w-4 h-4 text-indigo-400" />
             )}
           </button>
-          <Link
-            href="/login"
-            className="px-4 py-2 text-sm font-semibold text-foreground-secondary hover:text-foreground transition-colors duration-200 active-shrink"
-          >
-            Sign In
-          </Link>
           <Link
             href="/register"
             className="px-5 py-2.5 text-sm font-semibold text-white bg-primary hover:bg-primary-hover rounded-xl shadow-lg shadow-indigo-500/20 active-shrink spring-transition hover:scale-105"
