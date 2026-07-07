@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
-import { Mail, Lock, AlertCircle, Loader } from "lucide-react";
+import { Mail, Lock, AlertCircle, Loader, ArrowLeft } from "lucide-react";
 
 export default function Login() {
   const { login } = useAuth();
@@ -27,10 +27,20 @@ export default function Login() {
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center px-4 relative min-h-screen text-foreground">
+      {/* Back to Home Button */}
+      <div className="absolute top-6 left-6 z-20">
+        <Link 
+          href="/" 
+          className="flex items-center gap-2 px-4 py-2.5 rounded-xl glass border border-border-custom text-sm font-semibold text-foreground-secondary hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5 transition-all duration-200 active-shrink cursor-pointer"
+        >
+          <ArrowLeft className="w-4 h-4" /> Back to Home
+        </Link>
+      </div>
+
       {/* Background decoration */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
       
-      <div className="w-full max-w-md glass p-8 rounded-3xl shadow-2xl relative z-10 border border-border-custom float-slow">
+      <div className="w-full max-w-md glass p-8 rounded-3xl shadow-2xl relative z-10 border border-border-custom">
         {/* Header */}
         <div className="flex flex-col items-center mb-8">
           <Link href="/" className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-primary to-accent flex items-center justify-center mb-4 shadow-lg active-shrink p-2.5">
