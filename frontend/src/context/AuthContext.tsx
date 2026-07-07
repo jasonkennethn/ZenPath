@@ -3,8 +3,8 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-// Define backend URL - production Vercel link
-const BACKEND_URL = "https://zenpath-backend.vercel.app";
+// Define backend URL - production Vercel link, reads from .env if defined
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://zenpath-backend.vercel.app";
 
 interface UserProfile {
   id: number;
