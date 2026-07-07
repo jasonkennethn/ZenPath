@@ -18,7 +18,7 @@ app = FastAPI(
 )
 
 # CORS Middleware configuration - production level settings supporting credentials
-frontend_url = os.getenv("FRONTEND_URL", "https://zenpath.vercel.app")
+frontend_url = os.getenv("FRONTEND_URL", "https://zenpath-frontend.vercel.app")
 origins = [
     frontend_url,
 ]

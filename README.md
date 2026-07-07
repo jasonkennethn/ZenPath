@@ -121,7 +121,7 @@ Generate a connection URL with SSL enabled, e.g.:
    ```bash
    npm run dev
    ```
-   * Open `https://zenpath.vercel.app` to access the application.
+   * Open `https://zenpath-frontend.vercel.app` to access the application.
 
 ---
 
