@@ -121,7 +121,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   return (
     <div className="flex-1 flex flex-col md:flex-row min-h-screen">
       {/* --- DESKTOP SIDEBAR --- */}
-      <aside className="hidden md:flex w-64 glass border-r border-border-custom flex-col justify-between shrink-0">
+      <aside className="hidden md:flex w-64 h-screen sticky top-0 glass border-r border-border-custom flex-col justify-between shrink-0">
         <div>
           {/* Logo Brand */}
           <div className="p-6 flex items-center gap-2.5 border-b border-border-custom">
@@ -137,7 +137,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       </aside>
 
       {/* --- MOBILE NAVBAR HEADER --- */}
-      <header className="md:hidden glass sticky top-0 z-40 px-6 py-4 flex items-center justify-between border-b border-border-custom">
+      <header className="md:hidden glass fixed top-0 left-0 right-0 z-40 px-6 py-4 flex items-center justify-between border-b border-border-custom">
         <div className="flex items-center gap-2.5">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-primary to-accent flex items-center justify-center shadow-lg p-2">
             <img src="/logo.png" alt="ZenPath Logo" className="logo-img w-full h-full object-contain" />
@@ -177,7 +177,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       )}
 
       {/* Main Panel Content Area */}
-      <main className="flex-1 flex flex-col min-w-0 bg-background overflow-y-auto">
+      <main className="flex-1 flex flex-col min-w-0 bg-background overflow-y-auto pt-20 md:pt-0">
         <div className="p-6 md:p-8 max-w-7xl w-full mx-auto flex-1 flex flex-col">
           {children}
         </div>
